@@ -1,0 +1,92 @@
+.new-arrivals-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #fdf6e3, #fbeec1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #fff8e1;
+  padding: 20px;
+  border-right: 1px solid #e0c097;
+}
+
+.sidebar-title {
+  font-size: 1.5rem;
+  color: #8d6e63;
+  margin-bottom: 1rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 12px;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #6d4c41;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.sidebar a:hover {
+  color: #a1887f;
+}
+
+/* Main Content */
+.new-arrivals-content {
+  flex: 1;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.new-arrivals-content h2 {
+  font-size: 1.8rem;
+  color: #4e342e;
+  margin-bottom: 24px;
+}
+
+/* Job Cards */
+.job-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.job-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #e0c097;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.job-card h3 {
+  color: #6d4c41;
+  margin-bottom: 8px;
+}
+
+.job-card p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #4e342e;
+}
+
+/* Loading and Error */
+.loading-container, .error-container, .no-jobs {
+  text-align: center;
+  padding: 40px;
+}
