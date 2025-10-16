@@ -1,11 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { getUserOrders, deleteOrder, updateOrderStatus } from '../../api/orderApi';
 import Header from '../Header';
 import { toast } from 'react-hot-toast';
-import { useReactToPrint } from 'react-to-print';
-import OrderBill from './OrderBill';
-
-const lkrFormat = new Intl.NumberFormat('en-LK', { style: 'currency', currency: 'LKR', maximumFractionDigits: 2 });
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -13,22 +9,6 @@ const MyOrders = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [printOrder, setPrintOrder] = useState(null);
-  
-  const printRef = useRef(null);
-  
-  const handlePrint = useReactToPrint({
-    contentRef: printRef,
-    documentTitle: `Order_${printOrder?.orderNumber || 'Invoice'}`,
-    onAfterPrint: () => setPrintOrder(null),
-  });
-
-  useEffect(() => {
-    if (printOrder && printRef.current) {
-      handlePrint();
-    }
-  }, [printOrder, handlePrint]);
-
   const [editFormData, setEditFormData] = useState({
     address: {
       street: '',
@@ -49,6 +29,7 @@ const MyOrders = () => {
     try {
       setLoading(true);
       const data = await getUserOrders();
+      // Filter only pending orders
       const pendingOrders = data
       setOrders(pendingOrders);
     } catch (error) {
@@ -58,6 +39,8 @@ const MyOrders = () => {
       setLoading(false);
     }
   };
+
+
 
   const handleDeleteClick = (order) => {
     setSelectedOrder(order);
@@ -83,6 +66,7 @@ const MyOrders = () => {
       });
     }
     
+    // Clear error when user types
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -94,28 +78,33 @@ const MyOrders = () => {
   const validateForm = () => {
     const newErrors = {};
     
+    // Street validation
     if (!editFormData.address.street.trim()) {
       newErrors['address.street'] = 'Street is required';
     }
     
+    // City validation
     if (!editFormData.address.city.trim()) {
       newErrors['address.city'] = 'City is required';
     } else if (!/^[a-zA-Z\s]+$/.test(editFormData.address.city)) {
       newErrors['address.city'] = 'City should contain only letters';
     }
     
+    // State validation
     if (!editFormData.address.state.trim()) {
       newErrors['address.state'] = 'State is required';
     } else if (!/^[a-zA-Z\s]+$/.test(editFormData.address.state)) {
       newErrors['address.state'] = 'State should contain only letters';
     }
     
+    // Zip code validation
     if (!editFormData.address.zipCode.trim()) {
       newErrors['address.zipCode'] = 'Zip code is required';
     } else if (!/^\d{5}(-\d{4})?$/.test(editFormData.address.zipCode)) {
       newErrors['address.zipCode'] = 'Invalid zip code format (e.g., 12345 or 12345-6789)';
     }
     
+    // Country validation
     if (!editFormData.address.country.trim()) {
       newErrors['address.country'] = 'Country is required';
     } else if (!/^[a-zA-Z\s]+$/.test(editFormData.address.country)) {
@@ -134,6 +123,8 @@ const MyOrders = () => {
     }
     
     try {
+      // Since there's no direct update order API, we'll use updateOrderStatus
+      // and pass the updated address and payment method
       await updateOrderStatus(selectedOrder._id, 'pending', {
         address: editFormData.address,
         paymentMethod: editFormData.paymentMethod
@@ -173,9 +164,9 @@ const MyOrders = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header /><br></br><br></br>
+      <Header />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">My Orders</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center">My Pending Orders</h1>
         
         {orders.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-6 text-center">
@@ -219,9 +210,9 @@ const MyOrders = () => {
                           {order.items.map((item, index) => (
                             <tr key={index}>
                               <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{item.name}</td>
-                              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">{lkrFormat.format(item.price)}</td>
+                              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">${item.price.toFixed(2)}</td>
                               <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">{item.quantity}</td>
-                              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">{lkrFormat.format(item.subtotal)}</td>
+                              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">${item.subtotal.toFixed(2)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -239,26 +230,18 @@ const MyOrders = () => {
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Payment Details</h3>
                       <p className="text-sm text-gray-600">Method: {order.paymentMethod}</p>
-                      <p className="text-sm text-gray-600">Total: {lkrFormat.format(order.totalBill)}</p>
+                      <p className="text-sm text-gray-600">Total: ${order.totalBill.toFixed(2)}</p>
                     </div>
                   </div>
                   
                   <div className="flex justify-end space-x-4">
-                    <button
-                      onClick={() => setPrintOrder(order)}
-                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                   
+              { order.status.toUpperCase()==="PENDING"&&     <button
+                      onClick={() => handleDeleteClick(order)}
+                      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
                     >
-                      Print Bill
-                    </button>
-                    
-                    {order.status.toUpperCase()==="PENDING" && (
-                      <button
-                        onClick={() => handleDeleteClick(order)}
-                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                      >
-                        Delete Order
-                      </button>
-                    )}
+                      Delete Order
+                    </button>}
                   </div>
                 </div>
               </div>
@@ -266,6 +249,7 @@ const MyOrders = () => {
           </div>
         )}
         
+        {/* Edit Modal */}
         {editModalOpen && selectedOrder && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
@@ -364,6 +348,7 @@ const MyOrders = () => {
                   >
                     <option value="credit_card">Credit Card</option>
                     <option value="debit_card">Debit Card</option>
+                
                     <option value="cash_on_delivery">Cash On Delivery</option>
                     <option value="bankTransfer">Bank Transfer</option>
                   </select>
@@ -389,6 +374,7 @@ const MyOrders = () => {
           </div>
         )}
         
+        {/* Delete Confirmation Modal */}
         {deleteModalOpen && selectedOrder && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
@@ -412,10 +398,6 @@ const MyOrders = () => {
             </div>
           </div>
         )}
-
-        <div style={{ display: 'none' }}>
-          {printOrder && <OrderBill ref={printRef} order={printOrder} />}
-        </div>
       </div>
     </div>
   );

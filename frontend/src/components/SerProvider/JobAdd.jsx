@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Spin, Alert, Form, Input, Button, message, Modal, InputNumber } from "antd";
+import { useParams } from "react-router-dom";
+import {
+  Spin,
+  Alert,
+  Form,
+  Input,
+  Button,
+  message,
+  Modal,
+} from "antd";
+import { InputNumber } from "antd";
 import Header from "../Header";
 import Footer from "../Footer";
 import "./JobAdd.css";
@@ -36,82 +46,80 @@ function NewArrivalsDashboard() {
     fetchNewJobs();
   }, [providerId]);
 
-  const onFinish = async (values) => {
+    const onFinish = async (values) => {
     setCreating(true);
     try {
-      const response = await axios.post("http://localhost:5001/api/test-data/jobs", {
+        const response = await axios.post("http://localhost:5001/api/test-data/jobs", {
         ...values,
         status: "new",
-      });
+        });
 
-      if (response.data?.success) {
+        if (response.data?.success) {
         form.resetFields();
         setIsModalOpen(false);
         fetchNewJobs();
+        // Show success message after modal closes
         setTimeout(() => {
-          message.success("Job added successfully!");
+            message.success("Job added successfully!");
         }, 300);
-      } else {
+        } else {
         throw new Error(response.data?.message || "Failed to add job");
-      }
+        }
     } catch (error) {
-      console.error("Error adding job:", error);
-      message.error(error.response?.data?.message || "Failed to add job");
+        console.error("Error adding job:", error);
+        message.error(error.response?.data?.message || "Failed to add job");
     } finally {
-      setCreating(false);
+        setCreating(false);
     }
-  };
+    };
 
-  const handleRatingSubmit = async (values) => {
+    const handleRatingSubmit = async (values) => {
     setRatingLoading(true);
     try {
-      const response = await axios.post("http://localhost:5001/api/test-data/ratings", {
+        const response = await axios.post("http://localhost:5001/api/test-data/ratings", {
         ...values,
         rating: parseFloat(values.rating) || 5,
         comment: values.comment || "Test rating",
-      });
+        });
 
-      if (response.data?.success) {
+        if (response.data?.success) {
         ratingForm.resetFields();
         setRatingModalOpen(false);
+        // Show success message after modal closes
         setTimeout(() => {
-          message.success("Rating added successfully!");
+            message.success("Rating added successfully!");
         }, 300);
-      } else {
+        } else {
         throw new Error(response.data?.message || "Failed to add rating");
-      }
+        }
     } catch (error) {
-      console.error("Error adding rating:", error);
-      message.error(error.response?.data?.message || "Failed to add rating");
+        console.error("Error adding rating:", error);
+        message.error(error.response?.data?.message || "Failed to add rating");
     } finally {
-      setRatingLoading(false);
+        setRatingLoading(false);
     }
-  };
-
-  // Custom validator to allow only letters and spaces
-  const validateName = (_, value) => {
-    if (!value) return Promise.reject("Please enter the name");
-    const regex = /^[A-Za-z\s]+$/;
-    if (!regex.test(value)) {
-      return Promise.reject("Name can only contain letters and spaces");
-    }
-    return Promise.resolve();
-  };
+    };
 
   return (
     <div className="new-arrivals">
       <Header />
-      <div className="dashboard-header">
-        <br />
-        <div className="button-group">
-          <Button className="themed-button primary" onClick={() => setIsModalOpen(true)}>
-            Request Custom Job
-          </Button>
-          <Button className="themed-button secondary" onClick={() => setRatingModalOpen(true)}>
-            Add Rating
-          </Button>
-        </div>
+    <div className="dashboard-header">
+      <br />
+      <div className="button-group">
+        <Button
+          className="themed-button primary"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Request Custom Job
+        </Button>
+        <Button
+          className="themed-button secondary"
+          onClick={() => setRatingModalOpen(true)}
+        >
+          Add Rating
+        </Button>
       </div>
+    </div>
 
       {/* Job Modal */}
       <Modal
@@ -121,43 +129,28 @@ function NewArrivalsDashboard() {
         footer={null}
         centered
       >
-        <Form form={form} layout="vertical" onFinish={onFinish} initialValues={{ providerId }}>
-          <Form.Item
-            name="title"
-            label="Job Title"
-            rules={[{ required: true, message: "Please enter job title" }]}
-          >
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          initialValues={{ providerId }}
+        >
+          <Form.Item name="providerId" label="Provider ID" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item
-            name="description"
-            label="Job Description"
-            rules={[{ required: true, message: "Please enter job description" }]}
-          >
+          <Form.Item name="title" label="Job Title" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="description" label="Job Description" rules={[{ required: true }]}>
             <Input.TextArea />
           </Form.Item>
-          <Form.Item
-            name="customerName"
-            label="Customer Name"
-            rules={[{ validator: validateName }]}
-          >
+          <Form.Item name="customerName" label="Customer Name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item
-            name="customerEmail"
-            label="Customer Email"
-            rules={[
-              { required: true, message: "Please enter customer email" },
-              { type: "email", message: "Please enter a valid email" },
-            ]}
-          >
+          <Form.Item name="customerEmail" label="Customer Email" rules={[{ required: true, type: "email" }]}>
             <Input />
           </Form.Item>
-          <Form.Item
-            name="customerLocation"
-            label="Location"
-            rules={[{ required: true, message: "Please enter location" }]}
-          >
+          <Form.Item name="customerLocation" label="Location" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item>
@@ -180,18 +173,15 @@ function NewArrivalsDashboard() {
           form={ratingForm}
           layout="vertical"
           onFinish={handleRatingSubmit}
-          initialValues={{ rating: 5, providerId }}
+          initialValues={{ rating: 5 }}
         >
-          <Form.Item
-            name="rating"
-            label="Rating (1–5)"
-            rules={[
-              { required: true, type: "number", min: 1, max: 5, message: "Enter rating 1–5" },
-            ]}
-          >
+          <Form.Item name="providerId" label="Provider ID" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="rating" label="Rating (1–5)" rules={[{ required: true, type: "number", min: 1, max: 5 }]}>
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="customer" label="Customer name (optional)">
+          <Form.Item name="customerId" label="Customer ID (optional)">
             <Input />
           </Form.Item>
           <Form.Item name="comment" label="Comment">
@@ -227,15 +217,9 @@ function NewArrivalsDashboard() {
           jobs.map((job) => (
             <div key={job._id} className="job-card">
               <h3>{job.title}</h3>
-              <p>
-                <strong>Description:</strong> {job.description.substring(0, 100)}...
-              </p>
-              <p>
-                <strong>Customer:</strong> {job.customerName} ({job.customerEmail})
-              </p>
-              <p>
-                <strong>Location:</strong> {job.customerLocation}
-              </p>
+              <p><strong>Description:</strong> {job.description.substring(0, 100)}...</p>
+              <p><strong>Customer:</strong> {job.customerName} ({job.customerEmail})</p>
+              <p><strong>Location:</strong> {job.customerLocation}</p>
             </div>
           ))
         )}

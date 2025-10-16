@@ -9,7 +9,6 @@ function NewArrivals() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [searchTerm, setSearchTerm] = useState(""); // 🔍 search state
 
   useEffect(() => {
     const fetchNewJobs = async () => {
@@ -26,13 +25,6 @@ function NewArrivals() {
 
     fetchNewJobs();
   }, [providerId]);
-
-  // Filter jobs by search term (case-insensitive)
-  const filteredJobs = jobs.filter((job) =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    job.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    job.customerName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <div className="new-arrivals-layout">
@@ -52,17 +44,6 @@ function NewArrivals() {
       <main className="new-arrivals-content">
         <h2>📦 New Jobs</h2>
 
-        {/* 🔍 Search Box */}
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Search jobs by title, description, or customer..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-box"
-          />
-        </div>
-
         {loading ? (
           <div className="loading-container">
             <Spin size="large" />
@@ -75,13 +56,13 @@ function NewArrivals() {
               Retry
             </button>
           </div>
-        ) : filteredJobs.length === 0 ? (
+        ) : jobs.length === 0 ? (
           <div className="no-jobs">
-            <p>No jobs found matching your search.</p>
+            <p>No new jobs found.</p>
           </div>
         ) : (
           <div className="job-list">
-            {filteredJobs.map((job) => (
+            {jobs.map((job) => (
               <div key={job._id} className="job-card">
                 <h3>{job.title}</h3>
                 <p><strong>Description:</strong> {job.description.substring(0, 100)}...</p>

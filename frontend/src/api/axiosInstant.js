@@ -1,7 +1,6 @@
 import axios from "axios";
 
-// ✅ Base URL for your backend API
-// Make sure this matches your Express server port & prefix
+// Create axios instance with base URL
 const API_BASE_URL = "http://localhost:5001/api";
 
 const axiosInstance = axios.create({
@@ -12,10 +11,9 @@ const axiosInstance = axios.create({
   },
 });
 
-// ✅ Request interceptor: attach token if available
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token"); // or use context if you prefer
+    const token = localStorage.getItem("token");
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -23,21 +21,18 @@ axiosInstance.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
-// ✅ Response interceptor: handle 401 (unauthorized)
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response) {
-      if (error.response.status === 401) {
-        console.warn("Unauthorized: removing invalid token");
-        localStorage.removeItem("token");
-        // 🚨 Optional: redirect to login page
-        // window.location.href = "/login";
-      }
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("token");
     }
+
     return Promise.reject(error);
   }
 );

@@ -52,7 +52,7 @@ const ShopPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header /><br></br><br></br>
+      <Header />
       
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 text-center">Shop</h1>

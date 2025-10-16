@@ -345,6 +345,10 @@ function EditProject() {
               </Link>
             </div>
 
+            {/* Project Info Notice */}
+            <div className="provider-notice" style={{ background: '#e0f2fe', borderColor: '#81d4fa', color: '#01579b' }}>
+              💡 You're editing project ID: {projectId}
+            </div>
           </form>
         </div>
       </div>

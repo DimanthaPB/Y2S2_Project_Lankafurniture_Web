@@ -358,11 +358,11 @@ function Inventory() {
     <select value={editingItemData.category} onChange={(e) =>
       setEditingItemData({...editingItemData, category: e.target.value})}>
       <option value="" disabled>-- Select Category --</option>
-      <option value="RAW Materials">RAW Materials</option>
+      <option value="Electronics">Electronics</option>
       <option value="Furniture">Furniture</option>
-      <option value="Accessories">Accessories</option>
-      <option value="Tools">Tools</option>
-      <option value="Other">Other</option>
+      <option value="Stationery">Stationery</option>
+      <option value="Clothing">Clothing</option>
+      <option value="Food">Food</option>
     </select>
 
     <input type="number" placeholder="Re Order Level" value={editingItemData.reorderLevel} onChange={(e) =>
