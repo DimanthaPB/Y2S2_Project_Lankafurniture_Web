@@ -46,8 +46,8 @@ router.get('/report', protect, async (req, res) => {
 
     // 🔸 Table layout
     const tableTop = doc.y + 10;
-    const rowHeight = 18;
-    const colWidths = [70, 100, 100, 80, 100, 100, 100]; // Adjusted widths
+    const rowHeight = 30;
+    const colWidths = [70, 100, 150, 80, 100, 100, 100]; // Adjusted widths
     const colX = [30];
     for (let i = 0; i < colWidths.length - 1; i++) {
       colX.push(colX[i] + colWidths[i]);

@@ -64,7 +64,7 @@ const DashboardLayout = ({ children }) => {
             Order Dashboard
           </Link>
           <Link
-            to="/deliDashboard"
+            to="http://localhost:5174/admin"
             className="flex items-center px-4 py-2 rounded hover:bg-amber-700 transition"
           >
             <ArchiveBoxIcon className="h-5 w-5 mr-2" />

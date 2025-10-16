@@ -20,7 +20,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="bg-[url('./assets/wood-bg.png')] bg-cover bg-center h-[60vh] flex flex-col items-center justify-center text-white text-center px-4">
-        <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
+        <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg text-white">
           Premium Wood Products & Skilled Craft Services
         </h1>
         <p className="mt-4 text-lg max-w-2xl text-amber-100">
@@ -38,6 +38,12 @@ export default function Home() {
             className="bg-white text-amber-900 px-6 py-3 rounded shadow hover:bg-amber-100 transition"
           >
             Hire a Craftsman
+          </Link>
+          <Link
+            to= "http://localhost:5174/"
+            className="bg-white text-amber-900 px-6 py-3 rounded shadow hover:bg-amber-100 transition"
+          >
+            Delivery Services
           </Link>
         </div>
       </section>
