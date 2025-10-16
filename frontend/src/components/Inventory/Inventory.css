@@ -1,0 +1,427 @@
+/* ====== Global ====== */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8f9fc;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.inventory-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+/* Horizontal Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #8B5A2B;
+  padding: 12px 20px;
+  color: #F0F0F0;
+}
+
+.navbar-logo img {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 25px;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navbar-links a:hover {
+  color: #f39c12;
+}
+
+
+/* ====== Headings ====== */
+h1, h2, h3 {
+  color: #222;
+}
+
+/* ====== Dashboard (Overall Inventory Summary) ====== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #f5f8ff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  color: #8B5A2B;
+}
+
+.stat-card.low h3 {
+  color: #d9534f;
+}
+
+/* ====== Form Section ====== */
+.form-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.form-section input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-section input:focus {
+  border-color: #8B5A2B;
+}
+
+/* Make description wider */
+#description {
+  grid-column: span 2;
+}
+
+/* Add Item button */
+.form-section button {
+  padding: 12px 18px;
+  background: #8B5A2B;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-weight: 500;
+}
+
+.form-section button:hover {
+  background: #0056b3;
+}
+
+/* ====== Item List ====== */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.item-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.item-card:hover {
+  transform: scale(1.01);
+}
+
+.item-card.low {
+  border-left: 6px solid #d9534f;
+}
+
+.item-actions button {
+  margin-left: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.item-actions button:first-child {
+  background: #28a745;
+  color: white;
+}
+
+.item-actions button:first-child:hover {
+  background: #8B5A2B;
+}
+
+.item-actions button:last-child {
+  background: #c9302c;
+  color: white;
+}
+
+.item-actions button:last-child:hover {
+  background: #8B5A2B;
+}
+
+/* ====== Report Section ====== */
+.report-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  margin-top: 20px;
+}
+
+.report-card p {
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* ====== Chart Section ====== */
+canvas {
+  max-width: 100% !important;
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-top: 20px;
+}
+.inventory-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: linear-gradient(180deg, #f5f5dc, #d2b48c, #808080);
+  padding: 20px;
+  color: #333;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #4b3832;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nav-links a {
+  color: #333;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  background: #e0d7c6;
+}
+
+.inventory-container {
+  flex: 1;
+  padding: 30px;
+  background: #f9f9f7;
+}
+
+/*search*/
+.search-input {
+  width: 100%;
+  max-width: 350px;   /* keeps it from being too wide */
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+
+  /* smooth interactions */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #2563eb;       /* nice blue border */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); /* subtle glow */
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #888;   /* softer placeholder */
+  font-size: 13px;
+}
+
+
+/*Add Item Button*/
+.toggle-btn {
+  background-color: #8B5A2B; /* blue */
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.toggle-btn:hover {
+  background-color: #1e40af; /* darker blue */
+}
+
+.toggle-btn:active {
+  transform: scale(0.96); /* subtle press effect */
+}
+
+.toggle-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+/* Container for edit buttons */
+.edit-buttons {
+  display: flex;              /* Horizontal layout */
+  justify-content: flex-end;  /* Align to the right */
+  gap: 10px;                  /* Space between buttons */
+  margin-top: 8px;            /* Space above buttons */
+  flex-wrap: wrap;            /* Wrap if container is too small */
+}
+
+/* Common button style */
+.edit-buttons button {
+  padding: 6px 14px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Save button style */
+.edit-buttons button:first-child {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.edit-buttons button:first-child:hover {
+  background-color: #45a049;
+}
+
+/* Cancel button style */
+.edit-buttons button:last-child {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+.edit-buttons button:last-child:hover {
+  background-color: #d32f2f;
+}
+
+/* Optional: make buttons sticky at bottom of card if desired */
+.item-card {
+  position: relative;
+  padding-bottom: 50px; /* Ensure space for sticky buttons */
+}
+
+.edit-buttons.sticky {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+/* Edit container as row */
+.edit-item-container {
+  display: flex;
+  flex-wrap: wrap;         /* wrap if too many fields */
+  gap: 10px;               /* spacing between fields */
+  align-items: center;     /* align nicely in row */
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Input and select fields in row */
+.edit-item-container input,
+.edit-item-container select,
+.edit-item-container textarea {
+  flex: 1 1 150px;        /* flexible width, min 150px */
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Focus effect */
+.edit-item-container input:focus,
+.edit-item-container select:focus,
+.edit-item-container textarea:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+  outline: none;
+}
+
+/* Buttons stay at the end of the row */
+.edit-buttons {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;   /* push buttons to the right */
+}
+
+/* Button styles */
+.edit-buttons button {
+  padding: 6px 14px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+/* Save */
+.edit-buttons button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+.edit-buttons button:first-child:hover {
+  background-color: #45a049;
+}
+
+/* Cancel */
+.edit-buttons button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+.edit-buttons button:last-child:hover {
+  background-color: #d32f2f;
+}
+
+
+
+
+
+
+

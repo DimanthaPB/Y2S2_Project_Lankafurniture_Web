@@ -32,6 +32,17 @@ const SalaryModal = ({ isOpen, onClose, employeeId, salary, onSuccess, token }) 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (form.basic <= 0) {
+      toast.error('Basic salary must be greater than 0');
+      return;
+    }
+
+    if (form.attendance.workingDays <= 0) {
+      toast.error('Working days must be greater than 0');
+      return;
+    }
+
     try {
       const payload = { ...form, employeeId };
       if (salary) {
@@ -60,7 +71,7 @@ const SalaryModal = ({ isOpen, onClose, employeeId, salary, onSuccess, token }) 
         <div className="p-6">
           <h2 className="text-2xl font-bold mb-4">{salary ? 'Edit Salary' : 'Add Salary'}</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
-            
+
             {/* Basic Info */}
             <div>
               <h3 className="text-lg font-semibold mb-2">Basic Info</h3>

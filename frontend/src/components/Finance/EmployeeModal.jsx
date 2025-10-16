@@ -87,7 +87,7 @@ const EmployeeModal = ({ isOpen, onClose, onSave, employee }) => {
             onChange={handleChange}
             placeholder="Bank Name"
             required
-            pattern="[A-Za-z\s]+"
+            pattern="[A-Za-z\s]+$"
             title="Only letters and spaces allowed"
             className="w-full p-2 border border-amber-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
           />

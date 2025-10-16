@@ -50,7 +50,7 @@ export default function Header() {
         {/* Auth Buttons */}
         <div className="flex items-center space-x-3">
           {user ? (
-            <>
+            <Link to="/profile">
               <span className="text-sm text-amber-900">Welcome, {user.name}</span>
               <button
                 onClick={handleLogout}
@@ -58,7 +58,7 @@ export default function Header() {
               >
                 Logout
               </button>
-            </>
+            </Link>
           ) : (
             <>
               <Link
